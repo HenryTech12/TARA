@@ -1,3 +1,5 @@
+from urllib.parse import urlsplit, urlunsplit
+
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -45,7 +47,18 @@ class Settings(BaseSettings):
         if not value:
             return cls.model_fields["qoreid_base_url"].default
         if not value.startswith(("http://", "https://")):
-            return f"https://{value}"
+            value = f"https://{value}"
+
+        # QoreID's own credential/dashboard materials list "www.qoreid.com"
+        # as the product's URL, right next to the API keys — easy to paste
+        # in by mistake for the API host. www.qoreid.com and bare
+        # qoreid.com serve the marketing site, not the API, and 301
+        # redirect to each other rather than to anything that returns a
+        # token. The real API host is api.qoreid.com.
+        parts = urlsplit(value)
+        if parts.netloc in ("www.qoreid.com", "qoreid.com"):
+            value = urlunsplit(parts._replace(netloc="api.qoreid.com"))
+
         return value
 
     # Neo4j, Redis, Groq, and Squad configuration removed — not used in TARA's
