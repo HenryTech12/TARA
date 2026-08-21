@@ -9,16 +9,21 @@ import { getDeviceId } from '@/utils/deviceId'
 
 const EMPTY_FORM = {
   full_name: '',
-  bvn: '',
+  id_type: 'bvn',
+  id_number: '',
   address: '',
   employer: '',
 }
 
+const ID_TYPE_LABELS = { bvn: 'BVN', nin: 'NIN' }
+
 function validate(form) {
   const errors = {}
   if (!form.full_name.trim()) errors.full_name = 'Required'
-  if (!form.bvn.trim()) errors.bvn = 'Required'
-  else if (!/^\d{11}$/.test(form.bvn.trim())) errors.bvn = 'BVN must be 11 digits'
+  if (!form.id_number.trim()) errors.id_number = 'Required'
+  else if (!/^\d{11}$/.test(form.id_number.trim())) {
+    errors.id_number = `${ID_TYPE_LABELS[form.id_type]} must be 11 digits`
+  }
   return errors
 }
 
@@ -49,6 +54,11 @@ export default function VerifyIdentity() {
     if (errors[field]) setErrors((err) => ({ ...err, [field]: undefined }))
   }
 
+  const setIdType = (id_type) => () => {
+    setForm((f) => ({ ...f, id_type }))
+    if (errors.id_number) setErrors((err) => ({ ...err, id_number: undefined }))
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     const errs = validate(form)
@@ -57,7 +67,7 @@ export default function VerifyIdentity() {
     const { first_name, last_name } = splitName(form.full_name)
     try {
       const data = await verifyMutation.mutateAsync({
-        bvn: form.bvn.trim(),
+        [form.id_type]: form.id_number.trim(),
         first_name,
         last_name,
         device_id: deviceId ?? undefined,
@@ -91,14 +101,34 @@ export default function VerifyIdentity() {
             error={errors.full_name}
             disabled={verifyMutation.isPending}
           />
-          <Input
-            label="BVN"
-            placeholder="11-digit Bank Verification Number"
-            value={form.bvn}
-            onChange={set('bvn')}
-            error={errors.bvn}
-            disabled={verifyMutation.isPending}
-          />
+          <div>
+            <label className="text-xs text-[#94A3B8] font-medium uppercase tracking-wider">ID Type</label>
+            <div className="flex gap-2 mt-1.5 mb-3">
+              {Object.entries(ID_TYPE_LABELS).map(([value, label]) => (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={setIdType(value)}
+                  disabled={verifyMutation.isPending}
+                  className={`px-3 py-1.5 rounded-md text-xs font-medium border transition-colors ${
+                    form.id_type === value
+                      ? 'bg-[#00D4AA]/10 border-[#00D4AA]/50 text-[#00D4AA]'
+                      : 'bg-[#1C2333] border-[#2D3748] text-[#94A3B8] hover:text-[#F7F9FC]'
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+            <Input
+              label={ID_TYPE_LABELS[form.id_type]}
+              placeholder={`11-digit ${form.id_type === 'bvn' ? 'Bank Verification Number' : 'National Identity Number'}`}
+              value={form.id_number}
+              onChange={set('id_number')}
+              error={errors.id_number}
+              disabled={verifyMutation.isPending}
+            />
+          </div>
           <div className="grid grid-cols-2 gap-3">
             <Input
               label="Device ID (auto-detected)"
