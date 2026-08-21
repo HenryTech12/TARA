@@ -1,0 +1,218 @@
+[
+  {
+    "name": "Adaeze Nwankwo",
+    "bvn": "22198877001",
+    "device_id": "DEV-9F31A",
+    "address": "14 Allen Ave, Ikeja",
+    "phone": "08031234501",
+    "employer": "Zenta Logistics Ltd",
+    "verified_at": "2026-08-21T06:12:00"
+  },
+  {
+    "name": "Adaeze N. Nwankwo",
+    "bvn": "22198877002",
+    "device_id": "DEV-9F31A",
+    "address": "14 Allen Ave, Ikeja",
+    "phone": "08031234502",
+    "employer": "Zenta Logistics Ltd",
+    "verified_at": "2026-08-21T06:40:00"
+  },
+  {
+    "name": "Chidinma Okoro",
+    "bvn": "22198877003",
+    "device_id": "DEV-9F31A",
+    "address": "14 Allen Ave, Ikeja",
+    "phone": "08031234503",
+    "employer": "Zenta Logistics Ltd",
+    "verified_at": "2026-08-21T07:05:00"
+  },
+  {
+    "name": "Ifeoma Balogun",
+    "bvn": "22198877004",
+    "device_id": "DEV-7C112",
+    "address": "14 Allen Ave, Ikeja",
+    "phone": "08031234504",
+    "employer": "Zenta Logistics Ltd",
+    "verified_at": "2026-08-21T07:38:00"
+  },
+  {
+    "name": "Tobenna Eze",
+    "bvn": "22198877005",
+    "device_id": "DEV-9F31A",
+    "address": "14 Allen Ave, Ikeja",
+    "phone": "08031234505",
+    "employer": "Zenta Logistics Ltd",
+    "verified_at": "2026-08-21T08:10:00"
+  },
+  {
+    "name": "Uchenna Madu",
+    "bvn": "22198877006",
+    "device_id": "DEV-7C112",
+    "address": "14 Allen Ave, Ikeja",
+    "phone": "08031234506",
+    "employer": "Zenta Logistics Ltd",
+    "verified_at": "2026-08-21T09:02:00"
+  },
+  {
+    "name": "Blessing Nwosu",
+    "bvn": "22198877007",
+    "device_id": "DEV-3A882",
+    "address": "14 Allen Ave, Ikeja",
+    "phone": "08031234507",
+    "employer": "Zenta Logistics Ltd",
+    "verified_at": "2026-08-21T10:15:00"
+  },
+  {
+    "name": "Grace Chukwu",
+    "bvn": "22198877008",
+    "device_id": "DEV-3A882",
+    "address": "14 Allen Ave, Ikeja",
+    "phone": "08031234508",
+    "employer": "Zenta Logistics Ltd",
+    "verified_at": "2026-08-21T11:30:00"
+  },
+  {
+    "name": "Emeka Obiora",
+    "bvn": "22201000001",
+    "device_id": "DEV-1B441",
+    "address": "22 Herbert Macaulay Way, Yaba",
+    "phone": "08051230001",
+    "employer": "Coastline Freight Co",
+    "verified_at": "2026-08-18T09:15:00"
+  },
+  {
+    "name": "Funmilayo Adeyemi",
+    "bvn": "22201000002",
+    "device_id": "DEV-2C552",
+    "address": "5 Bode Thomas St, Surulere",
+    "phone": "08061230002",
+    "employer": "Meridian Retail Group",
+    "verified_at": "2026-08-19T13:42:00"
+  },
+  {
+    "name": "Kelechi Umeh",
+    "bvn": "22201000003",
+    "device_id": "DEV-3D663",
+    "address": "17 Admiralty Way, Lekki Phase 1",
+    "phone": "08071230003",
+    "employer": "Harborview Consulting",
+    "verified_at": "2026-08-20T08:05:00"
+  },
+  {
+    "name": "Ngozi Eze",
+    "bvn": "22201000004",
+    "device_id": "DEV-4E774",
+    "address": "9 Ajose Adeogun St, Victoria Island",
+    "phone": "08081230004",
+    "employer": "Palmgrove Textiles",
+    "verified_at": "2026-08-17T16:20:00"
+  },
+  {
+    "name": "Ibrahim Suleiman",
+    "bvn": "22201000005",
+    "device_id": "DEV-5F885",
+    "address": "31 Wharf Rd, Apapa",
+    "phone": "08091230005",
+    "employer": "Nordbay Shipping Agency",
+    "verified_at": "2026-08-21T05:50:00"
+  },
+  {
+    "name": "Aisha Bello",
+    "bvn": "22201000006",
+    "device_id": "DEV-6A996",
+    "address": "44 Ikorodu Rd, Maryland",
+    "phone": "08101230006",
+    "employer": "Sunrise EdTech Ltd",
+    "verified_at": "2026-08-16T11:05:00"
+  },
+  {
+    "name": "Oluwaseun Fashola",
+    "bvn": "22201000007",
+    "device_id": "DEV-7B107",
+    "address": "3 Iju Rd, Ogba",
+    "phone": "08111230007",
+    "employer": "Craneworks Engineering",
+    "verified_at": "2026-08-19T14:35:00"
+  },
+  {
+    "name": "Chiamaka Okafor",
+    "bvn": "22201000008",
+    "device_id": "DEV-8C218",
+    "address": "26 Isolo Rd, Isolo",
+    "phone": "08121230008",
+    "employer": "Delta Pharma Distributors",
+    "verified_at": "2026-08-20T18:12:00"
+  },
+  {
+    "name": "Yakubu Danladi",
+    "bvn": "22201000009",
+    "device_id": "DEV-9D329",
+    "address": "12 Church St, Ikorodu",
+    "phone": "08131230009",
+    "employer": null,
+    "verified_at": "2026-08-15T10:00:00"
+  },
+  {
+    "name": "Temitope Ojo",
+    "bvn": "22201000010",
+    "device_id": "DEV-0E430",
+    "address": "8 Randle Ave, Surulere",
+    "phone": "08141230010",
+    "employer": "Brightline Media House",
+    "verified_at": "2026-08-21T07:22:00"
+  },
+  {
+    "name": "Chukwuemeka Ibe",
+    "bvn": "22201000011",
+    "device_id": "DEV-1F541",
+    "address": "19 Oduduwa Cres, Ikeja GRA",
+    "phone": "08151230011",
+    "employer": "Vantage Power Systems",
+    "verified_at": "2026-08-14T15:48:00"
+  },
+  {
+    "name": "Halima Musa",
+    "bvn": "22201000012",
+    "device_id": "DEV-2G652",
+    "address": "27 Egbeda Rd, Egbeda",
+    "phone": "08161230012",
+    "employer": "Goldcrest Insurance",
+    "verified_at": "2026-08-18T12:30:00"
+  },
+  {
+    "name": "Segun Aluko",
+    "bvn": "22201000013",
+    "device_id": "DEV-3H763",
+    "address": "6 Alaba Int'l Market Rd, Alaba",
+    "phone": "08171230013",
+    "employer": "Ridgeway Auto Parts",
+    "verified_at": "2026-08-20T09:55:00"
+  },
+  {
+    "name": "Patience Etim",
+    "bvn": "22201000014",
+    "device_id": "DEV-4I874",
+    "address": "15 Diya St, Gbagada",
+    "phone": "08181230014",
+    "employer": "Lakeside Hospitality Group",
+    "verified_at": "2026-08-19T17:10:00"
+  },
+  {
+    "name": "Abdulrahman Yusuf",
+    "bvn": "22201000015",
+    "device_id": "DEV-5J985",
+    "address": "10 Oshodi-Apapa Expy, Oshodi",
+    "phone": "08191230015",
+    "employer": "Kingsbridge Logistics",
+    "verified_at": "2026-08-13T08:40:00"
+  },
+  {
+    "name": "Ebele Nnamdi",
+    "bvn": "22201000016",
+    "device_id": "DEV-6K096",
+    "address": "21 Ojuelegba Rd, Mushin",
+    "phone": "08201230016",
+    "employer": "Copperline Real Estate",
+    "verified_at": "2026-08-21T06:58:00"
+  }
+]
