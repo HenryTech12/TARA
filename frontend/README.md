@@ -1,4 +1,4 @@
-# TARA Frontend
+# TARA Frontend — TiT 6.0
 
 React (Vite) frontend for TARA — identity network trust layer for TiT 6.0.
 Adapted from the VERA/GRACE financial fraud detection frontend.
