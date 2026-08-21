@@ -8,8 +8,11 @@ class Settings(BaseSettings):
 
     postgres_url: str = "postgresql+psycopg://tara:tara@postgres:5432/tara"
 
-    # QoreID sandbox credentials — filled in once track-brief credentials are issued.
-    # Stubbed until then; see app/services/qoreid_service.py.
+    # QoreID credentials — leave blank to use the deterministic stub; see
+    # app/services/qoreid_service.py. QOREID_API_KEY holds the client secret
+    # (the "secret" field QoreID's /token endpoint expects), not a bearer
+    # token itself.
+    qoreid_client_id: str = ""
     qoreid_api_key: str = ""
     qoreid_base_url: str = "https://api.qoreid.com/v1"
 
