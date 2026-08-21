@@ -20,9 +20,14 @@ RUN useradd --create-home --shell /bin/bash tara \
     && chown -R tara:tara /app /data
 USER tara
 
+# Render (and several other PaaS hosts) inject PORT at runtime and route
+# traffic to whatever port the process actually binds — hardcoding 8000
+# here would silently break their health checks if PORT differs. Falls
+# back to 8000 for local `docker run`/docker-compose, where nothing sets it.
+ENV PORT=8000
 EXPOSE 8000
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
-    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=3)" || exit 1
+    CMD python -c "import os, urllib.request; urllib.request.urlopen(f'http://localhost:{os.environ.get(\"PORT\", 8000)}/health', timeout=3)" || exit 1
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
