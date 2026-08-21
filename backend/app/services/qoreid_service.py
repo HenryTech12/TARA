@@ -1,7 +1,14 @@
 from __future__ import annotations
 
 import hashlib
+import logging
 from datetime import datetime, timezone
+
+import httpx
+
+from app.core.config import settings
+
+logger = logging.getLogger(__name__)
 
 
 class QoreIDService:
@@ -12,6 +19,13 @@ class QoreIDService:
     knowledge of whether this method is backed by the stub or a real HTTP
     call. That is the seam: swapping the method body is the only change
     required once sandbox credentials are issued.
+
+    Goes live automatically once QOREID_API_KEY is set (see .env.example).
+    Without a key it always uses the deterministic stub. With a key, a
+    failed live call (timeout, non-2xx, network flake) falls back to the
+    stub rather than blowing up the demo — but the fallback is always
+    marked in raw_response so nobody mistakes a stubbed result for a real
+    QoreID verification.
     """
 
     async def verify_identity(
@@ -34,46 +48,67 @@ class QoreIDService:
             "raw_response": dict,
         }
         """
+        if settings.qoreid_api_key:
+            try:
+                return await self._verify_live(bvn, nin, first_name, last_name)
+            except Exception as exc:
+                logger.warning("QoreID live call failed, falling back to stub: %s", exc)
+                result = self._verify_stub(bvn, nin, first_name, last_name)
+                result["raw_response"]["fallback"] = True
+                result["raw_response"]["fallback_reason"] = str(exc)
+                return result
 
-        # ------------------------------------------------------------------
-        # REAL QOREID CALL GOES HERE — uncomment and fill in once sandbox
-        # credentials are issued at the TiT 6.0 track brief. Everything
-        # below this comment block is the stub; delete it when uncommenting.
-        # ------------------------------------------------------------------
-        #
-        # import httpx
-        # from app.core.config import settings
-        #
-        # QOREID_BASE_URL = settings.qoreid_base_url  # confirm exact URL at track brief
-        #
-        # async with httpx.AsyncClient(
-        #     base_url=QOREID_BASE_URL,
-        #     headers={
-        #         "Authorization": f"Bearer {settings.qoreid_api_key}",
-        #         "Content-Type": "application/json",
-        #     },
-        #     timeout=15.0,
-        # ) as client:
-        #     payload = {
-        #         "idNumber": bvn or nin,
-        #         "idType": "bvn" if bvn else "nin",
-        #         "firstname": first_name,
-        #         "lastname": last_name,
-        #     }
-        #     response = await client.post("/identities/verify", json=payload)
-        #     response.raise_for_status()
-        #     data = response.json()
-        #
-        # return {
-        #     "verified": data.get("status") == "verified",
-        #     "confidence": data.get("confidence", None),
-        #     "matched_name": data.get("data", {}).get("fullName"),
-        #     "matched_dob": data.get("data", {}).get("dateOfBirth"),
-        #     "matched_phone": data.get("data", {}).get("phoneNumber"),
-        #     "raw_response": data,
-        # }
-        # ------------------------------------------------------------------
+        return self._verify_stub(bvn, nin, first_name, last_name)
 
+    async def _verify_live(
+        self,
+        bvn: str | None,
+        nin: str | None,
+        first_name: str | None,
+        last_name: str | None,
+    ) -> dict:
+        """Real QoreID call. Payload/response shape is a best-guess placeholder
+        pending confirmation of the exact contract at the TiT 6.0 track brief —
+        adjust the request body and response field lookups below once that's
+        confirmed, the seam in verify_identity() above doesn't need to change.
+        """
+        async with httpx.AsyncClient(
+            base_url=settings.qoreid_base_url,
+            headers={
+                "Authorization": f"Bearer {settings.qoreid_api_key}",
+                "Content-Type": "application/json",
+            },
+            timeout=15.0,
+        ) as client:
+            payload = {
+                "idNumber": bvn or nin,
+                "idType": "bvn" if bvn else "nin",
+                "firstname": first_name,
+                "lastname": last_name,
+            }
+            response = await client.post("/identities/verify", json=payload)
+            response.raise_for_status()
+            data = response.json()
+
+        data["provider"] = "qoreid_live"
+        return {
+            "verified": data.get("status") == "verified",
+            "confidence": data.get("confidence", None),
+            "matched_name": data.get("data", {}).get("fullName"),
+            "matched_dob": data.get("data", {}).get("dateOfBirth"),
+            "matched_phone": data.get("data", {}).get("phoneNumber"),
+            "raw_response": data,
+        }
+
+    def _verify_stub(
+        self,
+        bvn: str | None = None,
+        nin: str | None = None,
+        first_name: str | None = None,
+        last_name: str | None = None,
+    ) -> dict:
+        """Deterministic pseudo-verification used when no QoreID key is
+        configured, or as the fallback when a live call fails."""
         id_number = bvn or nin
         full_name = " ".join(part for part in (first_name, last_name) if part).strip()
 
