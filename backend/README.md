@@ -9,7 +9,7 @@ financial fraud detection backend for TiT 6.0.
 ```bash
 cd backend
 pip install -r requirements.txt
-cp .env.example .env        # fill in POSTGRES_URL, QOREID_API_KEY
+cp .env.example .env        # fill in POSTGRES_URL, QOREID_CLIENT_ID, QOREID_API_KEY
 uvicorn app.main:app --reload --port 8000
 ```
 
@@ -23,7 +23,7 @@ python scripts/seed_demo_data.py
 ## Key endpoints
 
 ```
-POST /api/v1/identities/verify     Verify an identity (QoreID stub) and add it to the graph
+POST /api/v1/identities/verify     Verify an identity via QoreID (live if creds are set, stub otherwise) and add it to the graph
 GET  /api/v1/verdict/{identity_id} Run detection patterns, return trust score + verdict
 GET  /api/v1/graph                 Full identity graph (nodes + links)
 GET  /health                       Health check
