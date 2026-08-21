@@ -32,6 +32,22 @@ class Settings(BaseSettings):
     qoreid_api_key: str = ""
     qoreid_base_url: str = "https://api.qoreid.com/v1"
 
+    @field_validator("qoreid_base_url")
+    @classmethod
+    def _normalize_qoreid_base_url(cls, value: str) -> str:
+        """A blank QOREID_BASE_URL, or one pasted without the http(s)
+        scheme (e.g. "api.qoreid.com/v1"), makes httpx raise "Request URL
+        is missing an 'http://' or 'https://' protocol" the moment a live
+        call is attempted — falls back to the stub, but only after
+        breaking every live verification. Fall back to the real default
+        when blank, and add the scheme when it's just missing."""
+        value = value.strip()
+        if not value:
+            return cls.model_fields["qoreid_base_url"].default
+        if not value.startswith(("http://", "https://")):
+            return f"https://{value}"
+        return value
+
     # Neo4j, Redis, Groq, and Squad configuration removed — not used in TARA's
     # scope (PRD Section 02, Step 3: no Neo4j provisioning, no Celery/Redis
     # queue, no STR generation, no Squad webhooks).
