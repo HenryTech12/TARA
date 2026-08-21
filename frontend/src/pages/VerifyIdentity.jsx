@@ -1,15 +1,15 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { Card } from '@/components/ui/Card'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { useVerifyIdentity } from '@/hooks/useIdentities'
+import { getDeviceId } from '@/utils/deviceId'
 
 const EMPTY_FORM = {
   full_name: '',
   bvn: '',
-  device_id: '',
   address: '',
   employer: '',
 }
@@ -37,7 +37,12 @@ export default function VerifyIdentity() {
   const [errors, setErrors] = useState({})
   const [result, setResult] = useState(null)
   const [showRaw, setShowRaw] = useState(true)
+  const [deviceId, setDeviceId] = useState(null)
   const verifyMutation = useVerifyIdentity()
+
+  useEffect(() => {
+    getDeviceId().then(setDeviceId)
+  }, [])
 
   const set = (field) => (e) => {
     setForm((f) => ({ ...f, [field]: e.target.value }))
@@ -55,7 +60,7 @@ export default function VerifyIdentity() {
         bvn: form.bvn.trim(),
         first_name,
         last_name,
-        device_id: form.device_id.trim() || undefined,
+        device_id: deviceId ?? undefined,
         address: form.address.trim() || undefined,
         employer: form.employer.trim() || undefined,
       })
@@ -96,11 +101,10 @@ export default function VerifyIdentity() {
           />
           <div className="grid grid-cols-2 gap-3">
             <Input
-              label="Device ID"
-              placeholder="e.g. DEV-9F31A"
-              value={form.device_id}
-              onChange={set('device_id')}
-              disabled={verifyMutation.isPending}
+              label="Device ID (auto-detected)"
+              value={deviceId ?? 'Detecting…'}
+              readOnly
+              className="text-[#94A3B8] cursor-not-allowed"
             />
             <Input
               label="Employer"
@@ -122,7 +126,7 @@ export default function VerifyIdentity() {
             <Button type="button" variant="ghost" onClick={handleReset} disabled={verifyMutation.isPending}>
               Reset
             </Button>
-            <Button type="submit" variant="primary" loading={verifyMutation.isPending}>
+            <Button type="submit" variant="primary" loading={verifyMutation.isPending} disabled={!deviceId}>
               {verifyMutation.isPending ? 'Verifying…' : 'Verify Identity'}
             </Button>
           </div>
