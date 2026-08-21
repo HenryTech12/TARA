@@ -14,19 +14,23 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    restart: unless-stopped
 
   backend:
-    build: ./backend
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     environment:
       POSTGRES_URL: postgresql+psycopg://tara:tara@postgres:5432/tara
+      QOREID_CLIENT_ID: ${QOREID_CLIENT_ID:-}
+      QOREID_API_KEY: ${QOREID_API_KEY:-}
+      QOREID_BASE_URL: ${QOREID_BASE_URL:-https://api.qoreid.com/v1}
     depends_on:
       postgres:
         condition: service_healthy
-    volumes:
-      - ./backend:/app
-      - ./data:/data
+    restart: unless-stopped
 
 volumes:
   postgres_data:
